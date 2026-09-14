@@ -1,6 +1,6 @@
 # Jonah Haftarah Trainer
 
-A trainer for **Jonah 1:1–10**, patterned after [ariahaftorah](https://github.com/esemmelman/ariahaftorah).
+A trainer for **Jonah 1:1–6**, patterned after [ariahaftorah](https://github.com/esemmelman/ariahaftorah).
 
 Select Hebrew words within a verse to create a highlighted phrase. Click a highlight to record or replace its audio. Hover to listen, or click a verse number to play its recorded phrases in order. The Trope button hides or shows cantillation while retaining vowels.
 
@@ -12,4 +12,4 @@ Run `npm ci`, then `npm start`, and open http://localhost:4173. Microphone recor
 
 ## Text attribution
 
-Hebrew: *Miqra according to the Masorah*, via [Sefaria, Jonah 1:1–10](https://www.sefaria.org/Jonah.1.1-10), [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/). Formatting tags were removed and whitespace normalized; text is retained with vowels and trope. `verses.json` records the source and passage.
+Hebrew: *Miqra according to the Masorah*, via [Sefaria, Jonah 1:1–6](https://www.sefaria.org/Jonah.1.1-6), [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/). Formatting tags were removed and whitespace normalized; text is retained with vowels and trope. `verses.json` records the source and passage.

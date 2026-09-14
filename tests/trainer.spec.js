@@ -1,9 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
-test('ten verses, trope toggle, and mobile layout', async ({ page }) => {
+test('six verses, trope toggle, and mobile layout', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('.verse-row')).toHaveCount(10);
-  await expect(page.locator('.verse-number').last()).toHaveText('10');
+  await expect(page.locator('.verse-row')).toHaveCount(6);
+  await expect(page.locator('.verse-number').last()).toHaveText('6');
   const original = await page.locator('.verse-line').first().textContent();
   await page.getByRole('button', { name: 'Trope', exact: true }).click();
   expect(await page.locator('.verse-line').first().textContent()).toBe(original.replace(/[\u0591-\u05AF]/g, ''));
@@ -22,7 +22,7 @@ test('live Supabase phrase and recording round trip', async ({ page, request }) 
   const config = await page.evaluate(() => ({ url: SUPABASE_URL, key: SUPABASE_KEY, table: GROUP_TABLE, recordings: RECORDING_TABLE, bucket: RECORDING_BUCKET, storageKey: SUPABASE_STORAGE_ANON_KEY }));
   try {
     await page.evaluate(() => {
-      const words = document.querySelectorAll('.verse-line[data-verse="10"] .word');
+      const words = document.querySelectorAll('.verse-line[data-verse="6"] .word');
       const range = document.createRange(); range.setStartBefore(words[0]); range.setEndAfter(words[1]);
       const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
       document.querySelector('#passage').dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
@@ -38,7 +38,7 @@ test('live Supabase phrase and recording round trip', async ({ page, request }) 
     await page.reload(); await page.waitForFunction(() => remoteReady);
     expect(await page.evaluate(id => recordings.has(id), groupId)).toBe(true);
     await page.locator('.verse-number').last().click();
-    await expect(page.locator('#status')).toContainText('Verse 10 complete', { timeout: 15000 });
+    await expect(page.locator('#status')).toContainText('Verse 6 complete', { timeout: 15000 });
     await page.locator(`[data-group-id="${groupId}"]`).first().click();
     await page.getByRole('button', { name: 'Delete recording', exact: true }).click();
     await expect(page.locator('#status')).toContainText('Recording deleted');
