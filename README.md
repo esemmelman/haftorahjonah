@@ -13,3 +13,5 @@ Run `npm ci`, then `npm start`, and open http://localhost:4173. Microphone recor
 ## Text attribution
 
 Hebrew: *Miqra according to the Masorah*, via [Sefaria, Jonah 1:1–6](https://www.sefaria.org/Jonah.1.1-6), [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/). Formatting tags were removed and whitespace normalized; text is retained with vowels and trope. `verses.json` records the source and passage.
+
+Verse 5 supports selecting across existing highlights to replace overlapping groups and rerecord. Exact selections reopen the existing recording. Other groups remain unchanged. The atomic RPC is documented in `supabase-regroup-verse-5.sql`; superseded audio files are retained in Storage but removed from playback metadata.

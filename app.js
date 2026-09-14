@@ -358,17 +358,25 @@ passage.addEventListener('pointerup', () => setTimeout(async () => {
   }
   if (!remoteReady) { status.textContent = 'Wait for saved phrases to load, then try again.'; return; }
   const start = Number(selected[0].dataset.word), end = Number(selected.at(-1).dataset.word);
-  if (groups.some(group => group.verse === verse && group.start <= end && group.end >= start)) {
+  const exact = groups.find(group => group.verse === verse && group.start === start && group.end === end);
+  if (exact) { selection.removeAllRanges(); stopAudio(); openGroup(exact.id); return; }
+  const overlapping = groups.filter(group => group.verse === verse && group.start <= end && group.end >= start);
+  if (verse !== 5 && overlapping.length) {
     status.textContent = 'That selection overlaps a saved phrase. Click its highlight to record.'; return;
   }
   savingPhrase = true;
+  stopAudio();
   try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/${GROUP_TABLE}`, {
+    const color = groups.filter(g => g.verse === verse).length % 2 + 1;
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${verse === 5 ? 'rpc/jonah_regroup_verse_5' : GROUP_TABLE}`, {
       method: 'POST', headers: apiHeaders({ Prefer: 'return=representation' }),
-      body: JSON.stringify({ verse, start_word: start, end_word: end, color: groups.filter(g => g.verse === verse).length % 2 + 1 })
+      body: JSON.stringify(verse === 5 ? { p_start: start, p_end: end, p_color: color } : { verse, start_word: start, end_word: end, color })
     });
     if (!response.ok) throw new Error('Save failed');
     const [saved] = await response.json();
+    const replacedIds = new Set(overlapping.map(group => group.id));
+    groups = groups.filter(group => !replacedIds.has(group.id));
+    replacedIds.forEach(id => recordings.delete(id));
     groups.push({ id: saved.id, verse, start, end, color: saved.color });
     selection.removeAllRanges(); render(); updateRecordingRepairControl(); openGroup(saved.id);
     status.textContent = 'Phrase saved. Record its melody when you are ready.';
